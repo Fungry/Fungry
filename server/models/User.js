@@ -46,9 +46,9 @@ var User = mongoose.model('User', userSchema);
 
 // Async Unique Validation for `username`
 // Resource: http://timstermatic.github.io/blog/2013/08/06/async-unique-validation-with-expressjs-and-mongoose/
-User.schema.path('email').validate(async function (value) {
+User.schema.path('local.email').validate(async function (value) {
     value = value.toLowerCase();
-    var user = await User.findOne({ email: value });
+    var user = await User.findOne({ 'local.email': value });
     if (user) {
         return false;
     }
@@ -57,11 +57,11 @@ User.schema.path('email').validate(async function (value) {
 //hash the password before saving it to the database
 userSchema.pre('save', function (next) {
     var user = this;
-    bcrypt.hash(user.password, 10, function (err, hash) {
+    bcrypt.hash(user.local.password, 10, function (err, hash) {
         if (err) {
             return next(err);
         }
-        user.password = hash;
+        user.local.password = hash;
         next();
     })
 });
