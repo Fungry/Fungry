@@ -17,11 +17,11 @@ var userSchema = new mongoose.Schema({
     },
     firstName: {
         type: String,
-        required: [true, "can't be blank"],
+        // required: [true, "can't be blank"],
     },
     lastName: {
         type: String,
-        required: [true, "can't be blank"],
+        // required: [true, "can't be blank"],
     },
     // Passport OAuth for FB and Google
     facebook: {

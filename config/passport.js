@@ -32,7 +32,7 @@ module.exports = function (passport) {
     // =========================================================================
     // LOCAL SIGNUP ============================================================
     // =========================================================================
-    // we are using named strategies since we have one for login and one for signup
+    // Strategies: one for login and one for signup
     // by default, if there was no name, it would just be called 'local'
 
     passport.use('local-signup', new LocalStrategy({
@@ -95,7 +95,7 @@ module.exports = function (passport) {
                     return done(null, false, "No user with this email ID exists!");
 
                 // all is well, return successful user
-                if (bcrypt.compareSync(password, user.password)) {
+                if (bcrypt.compareSync(password, user.local.password)) {
                     return done(null, user);
 
                     // if the user is found but the password is wrong
