@@ -15,14 +15,8 @@ var userSchema = new mongoose.Schema({
             required: true,
         },
     },
-    firstName: {
-        type: String,
-        // required: [true, "can't be blank"],
-    },
-    lastName: {
-        type: String,
-        // required: [true, "can't be blank"],
-    },
+    firstName: { type: String },
+    lastName: { type: String },
     // Passport OAuth for FB and Google
     facebook: {
         id: String,
@@ -35,11 +29,11 @@ var userSchema = new mongoose.Schema({
         token: String,
         email: String,
         name: String
-    }
-    // offers: [{
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: 'Offer'
-    // }]
+    },
+    offers: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Offer'
+    }]
 }, { timestamps: true });
 
 var User = mongoose.model('User', userSchema);

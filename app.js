@@ -27,8 +27,8 @@ require('./config/passport')(passport);
 ///////////////////////////////////////////////////////////////////////
 
 // view engine setup
-// app.set('views', path.join(__dirname, 'views'));
-// app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'server', 'views'));
+app.set('view engine', 'ejs');
 app.set('json spaces', 2)
 
 // uncomment after placing your favicon in /public
@@ -52,6 +52,10 @@ app.use(passport.session()); // persistent login sessions
 require('./server/routes/authRoutes')(app, passport); 
 // app.use('/api/auth', authRoutes);
 
+app.get('/test', function (req, res) {
+    return res.render('index')
+})
+
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
     var err = new Error('Not Found');
@@ -68,7 +72,7 @@ app.use(function (err, req, res, next) {
     // render the error page
     res.status(err.status || 500);
     res.json({
-        error: "Error: " + err.toString(),
+        error: "Error handler reason => " + err.toString(),
     });
     // res.render('error');
 });
