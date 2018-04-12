@@ -1,8 +1,10 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
+const { isLoggedIn } = require('../middlewares/authCheck')
 
-/* GET users listing. */
-router.get('/', function(req, res, next) {
+/* GET all users listing. */
+// ADMIN only
+router.get('/', isLoggedIn, function(req, res, next) {
   res.send('respond with a resource');
 });
 

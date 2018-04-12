@@ -9,8 +9,6 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-// var authRoutes = require('./server/routes/authRoutes');
-
 ///////////////////////////////////////////////////////////////////////
 const mongoose = require('mongoose');
 const passport = require('passport');
@@ -48,9 +46,12 @@ app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 
 // routes ======================================================================
+const userRoutes = require('./server/routes/userRoutes');
+
 // load our routes and pass in our app and fully configured passport
 require('./server/routes/authRoutes')(app, passport); 
-// app.use('/api/auth', authRoutes);
+app.use('/api/users', userRoutes)
+
 
 app.get('/test', function (req, res) {
     return res.render('index')
