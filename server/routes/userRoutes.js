@@ -18,7 +18,7 @@ router.get('/', isLoggedIn, async function (req, res, next) {
 // GET single user
 router.get('/:username', isLoggedIn, async function (req, res, next) {
     try {
-        let user = await User.findOne({ 'local.email': req.params.username }, { 'local.password': 0 }).exec()
+        let user = await User.findOne({ 'local.username': req.params.username }, { 'local.password': 0 }).exec()
         if (!user) {
             res.status(404)
             return res.json({
@@ -39,39 +39,36 @@ router.get('/:username', isLoggedIn, async function (req, res, next) {
 
 // Update a User
 router.put('/:username', async function (req, res, next) {
+    let error = null;
+    // Add changes that you permit
+    let permittedChanges = ["firstName", "lastName", "aboutMe"];
+    let requestedChanges = Object.keys(req.body);
+
+    for (let i = 0; i < requestedChanges.length; i++) {
+        if (!permittedChanges.includes(requestedChanges[i]))
+            return next('You are trying to modify user properties you aren\'t allowed to.')
+    }
+    console.log("req.user.username:", req.user.local.username)
     try {
-        let user = await User.findOne(
-            { 'local.email': req.params.username },
-            'firstName lastName aboutMe'
+        let user = await User.findOneAndUpdate(
+            { 'local.username': req.user.local.username },
+            req.body,
+            {
+                new: true,
+                fields: 'firstName lastName aboutMe'
+            }
         ).exec()
-        
+
         if (!user) {
             res.status(404)
-            return res.json({
-                error: "No user with the username exists in our records"
-            })
-        } else {
-            console.log(user)
-            var obj1 = {
-                user: 'Hello',
-                name: 'Ben'
-            }
-            var obj2 = {
-                job: 'Vetti',
-                name: 'Hannah'
-            }
-            Object.assign(obj1, obj2);
-            console.log("Object 1: ", obj1);
-            console.log("Object 2: ", obj2);
-            return res.json({
-                error: null,
-                // message: user,
-                user,
-            })
+            error = "Something's fishy. We couldn't find you in our records";
+            return res.json({ error })
         }
 
+        return res.json({ error, user })
+
     } catch (error) {
-        next("PUT /api/users/ " + req.params.username + " | " + error.toString())
+        return next("PUT /api/users/ " + req.params.username + " | " + error.toString())
     }
 })
 
