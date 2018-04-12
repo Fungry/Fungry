@@ -17,6 +17,7 @@ var userSchema = new mongoose.Schema({
     },
     firstName: { type: String },
     lastName: { type: String },
+    email: {type: String},
     // Passport OAuth for FB and Google
     facebook: {
         id: String,
@@ -33,7 +34,8 @@ var userSchema = new mongoose.Schema({
     offers: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Offer'
-    }]
+    }],
+
 }, { timestamps: true });
 
 var User = mongoose.model('User', userSchema);
