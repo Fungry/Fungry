@@ -51,6 +51,7 @@ module.exports = function (app, passport) {
         passport.authenticate('local-signup', function (err, user, info) {
             // if (err) { return next(err); }
             if (err) {
+                // return next(err)
                 return res.json({
                     error: "Error: " + err.toString()
                 });
