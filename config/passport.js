@@ -84,7 +84,7 @@ module.exports = function (passport) {
         passwordField: 'password',
         passReqToCallback: true // allows us to pass back the entire request to the callback
     },
-        function (req, email, password, done) { // callback with email and password from our form
+        function (req, username, password, done) { // callback with email and password from our form
 
             // Check if a user whose email is the same as the form's email, exists
             User.findOne({ 'local.username': username }, function (err, user) {
