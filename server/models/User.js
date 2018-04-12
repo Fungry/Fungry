@@ -4,10 +4,10 @@ const bcrypt = require('bcrypt');
 var userSchema = new mongoose.Schema({
     // Passport local
     local: {
-        email: {
+        username: {
             type: String,
             lowercase: true,
-            required: [true, "can't be blank"],
+            required: [true, "Username can't be blank"],
             index: true
         },
         password: {
@@ -17,7 +17,11 @@ var userSchema = new mongoose.Schema({
     },
     firstName: { type: String },
     lastName: { type: String },
-    email: {type: String},
+    aboutMe: { type: String },
+    email: {
+        type: String,
+        required: [true, "Email can't be blank"],
+    },
     // Passport OAuth for FB and Google
     facebook: {
         id: String,
@@ -42,9 +46,18 @@ var User = mongoose.model('User', userSchema);
 
 // Async Unique Validation for `username`
 // Resource: http://timstermatic.github.io/blog/2013/08/06/async-unique-validation-with-expressjs-and-mongoose/
-User.schema.path('local.email').validate(async function (value) {
+User.schema.path('local.username').validate(async function (value) {
     value = value.toLowerCase();
-    var user = await User.findOne({ 'local.email': value });
+    var user = await User.findOne({ 'local.username': value });
+    if (user) {
+        return false;
+    }
+}, 'This username is already taken!');
+
+// The email has to be unique as well
+User.schema.path('email').validate(async function (value) {
+    value = value.toLowerCase();
+    var user = await User.findOne({ 'email': value });
     if (user) {
         return false;
     }
