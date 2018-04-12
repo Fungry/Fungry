@@ -72,6 +72,22 @@ module.exports = function (app, passport) {
     })
 
     // =====================================
+    // USER LOGIN CHECK ====================
+    // =====================================
+
+    app.get("/api/auth/check", function (req, res, next) {
+        // if user is authenticated in the session, carry on 
+        if (req.isAuthenticated())
+            // This needs a fix 
+            // not all user info must be given out 
+            return res.send(req.user)
+
+        // if they aren't redirect them to the home page
+        res.status(401)
+        return res.send(null)
+    })
+
+    // =====================================
     // PROFILE SECTION =====================
     // =====================================
     // we will want this protected so you have to be logged in to visit
