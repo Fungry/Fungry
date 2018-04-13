@@ -65,7 +65,7 @@ module.exports = function (app, passport) {
                 if (err) { return next(err); }
                 return res.json({
                     error: null,
-                    message: "User successfully logged in!"
+                    message: "User successfully signed up and logged in!"
                 })
             });
         })(req, res, next);
@@ -86,18 +86,6 @@ module.exports = function (app, passport) {
         res.status(401)
         return res.send(null)
     })
-
-    // =====================================
-    // PROFILE SECTION =====================
-    // =====================================
-    // we will want this protected so you have to be logged in to visit
-    // we will use route middleware to verify this (the isLoggedIn function)
-    app.get('/api/profile', isLoggedIn, function (req, res) {
-        return res.json({
-            error: null,
-            user: req.user
-        });
-    });
 
     // =====================================
     // LOGOUT ==============================

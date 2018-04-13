@@ -38,7 +38,7 @@ router.get('/:username', isLoggedIn, async function (req, res, next) {
 });
 
 // Update a User
-router.put('/:username', async function (req, res, next) {
+router.put('/:username', isLoggedIn, async function (req, res, next) {
     let error = null;
     // Add changes that you permit
     let permittedChanges = ["firstName", "lastName", "aboutMe"];
@@ -70,6 +70,34 @@ router.put('/:username', async function (req, res, next) {
     } catch (error) {
         return next("PUT /api/users/ " + req.params.username + " | " + error.toString())
     }
+})
+
+// Delete a user
+router.delete('/:username', isLoggedIn, async function (req, res, next) {
+    let error = null;
+    // Check if the user logged in is attemping to delete 
+    // another user's account
+    if (req.user.local.username !== req.params.username) {
+        return res.json({
+            error: "Ahaa! You can't delete another user mate!"
+        })
+    }
+
+    try {
+        let user = await User.findOneAndRemove(
+            { 'local.username': req.user.local.username }
+        ).exec();
+
+        if (!user) return res.json({ error: "User not found. Please try again" })
+
+    } catch (error) {
+        return next("DELETE /:username | " + error.toString());
+    }
+
+    // Log out the user
+    req.logout();
+    // Notify that the account has been deleted
+    return res.json({ error, message: "Account deleted" })
 })
 
 module.exports = router;
