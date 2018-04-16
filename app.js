@@ -11,6 +11,8 @@ var bodyParser = require('body-parser');
 
 ///////////////////////////////////////////////////////////////////////
 const mongoose = require('mongoose');
+mongoose.Promise = Promise;
+
 const passport = require('passport');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
@@ -49,7 +51,7 @@ app.use(passport.session()); // persistent login sessions
 const userRoutes = require('./server/routes/userRoutes');
 
 // load our routes and pass in our app and fully configured passport
-require('./server/routes/authRoutes')(app, passport); 
+require('./server/routes/authRoutes')(app, passport);
 app.use('/api/users', userRoutes)
 
 
