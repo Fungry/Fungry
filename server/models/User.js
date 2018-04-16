@@ -5,42 +5,54 @@ var userSchema = new mongoose.Schema({
     // Passport local
     local: {
         username: {
-            type: String,
+            $type: String,
             lowercase: true,
             required: [true, "Username can't be blank"],
             index: true
         },
         password: {
-            type: String,
+            $type: String,
             required: true,
         },
     },
-    firstName: { type: String },
-    lastName: { type: String },
-    aboutMe: { type: String },
+    firstName: { $type: String },
+    lastName: { $type: String },
+    aboutMe: { $type: String },
     email: {
-        type: String,
+        $type: String,
         required: [true, "Email can't be blank"],
     },
     // Passport OAuth for FB and Google
-    facebook: {
-        id: String,
-        token: String,
-        name: String,
-        email: String
-    },
-    google: {
-        id: String,
-        token: String,
-        email: String,
-        name: String
-    },
+    // facebook: {
+    //     id: String,
+    //     token: String,
+    //     name: String,
+    //     email: String
+    // },
+    // google: {
+    //     id: String,
+    //     token: String,
+    //     email: String,
+    //     name: String
+    // },
+    savedLocations: [{
+        type: {
+            $type: String,
+            default: 'Point',
+            required: [true, "GeoJSON requires a type"]
+        },
+        address: { $type: String },
+        coordinates: {
+            $type: [Number],
+            required: [true, "GeoJSON requires latitude and longitude coordinates"]
+        }
+    }],
     offers: [{
-        type: mongoose.Schema.Types.ObjectId,
+        $type: mongoose.Schema.Types.ObjectId,
         ref: 'Offer'
     }],
 
-}, { timestamps: true });
+}, { timestamps: true, typeKey: '$type' });
 
 var User = mongoose.model('User', userSchema);
 
