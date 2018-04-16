@@ -13,10 +13,10 @@ var offerSchema = new mongoose.Schema({
     location: {
         type: {
             $type: String,
-            default:'Point',
+            default: 'Point',
             required: [true, "GeoJSON requires a type"]
         },
-        address: {$type: String},
+        address: { $type: String },
         coordinates: {
             $type: [Number],
             required: [true, "GeoJSON requires latitude and longitude coordinates"]
