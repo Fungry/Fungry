@@ -49,10 +49,12 @@ app.use(passport.session()); // persistent login sessions
 
 // routes ======================================================================
 const userRoutes = require('./server/routes/userRoutes');
+const offerRoutes = require('./server/routes/offerRoutes');
 
 // load our routes and pass in our app and fully configured passport
 require('./server/routes/authRoutes')(app, passport);
 app.use('/api/users', userRoutes)
+app.use('/api/offers', offerRoutes)
 
 
 app.get('/test', function (req, res) {

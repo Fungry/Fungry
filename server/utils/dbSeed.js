@@ -89,4 +89,4 @@ async function cleanUp() {
     await db.Offer.remove({}).exec();
 }
 // Uncomment the following for cleaing up the database
-// cleanUp();
+cleanUp();
