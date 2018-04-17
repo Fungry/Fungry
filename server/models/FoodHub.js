@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const shortid = require('shortid');
 
 var foodHubSchema = new mongoose.Schema({
     foodHubID: {

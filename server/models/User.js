@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
+const shortid = require('shortid');
 
 var userSchema = new mongoose.Schema({
     // Passport local

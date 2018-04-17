@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const shortid = require('shortid');
 
 var offerSchema = new mongoose.Schema({
     offerID: {
