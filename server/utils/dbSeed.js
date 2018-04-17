@@ -87,6 +87,7 @@ beefItUp();
 async function cleanUp() {
     await db.User.remove({}).exec();
     await db.Offer.remove({}).exec();
+    await db.FoodHub.remove({}).exec();
 }
 // Uncomment the following for cleaing up the database
-cleanUp();
+// cleanUp();

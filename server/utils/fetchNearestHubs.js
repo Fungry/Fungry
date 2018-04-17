@@ -1,17 +1,17 @@
-const FoodHub = require('../models').FoodHub
+// const FoodHub = require('../models').FoodHub
 
-function fetchNearestHubs(coordinates) {
+function fetchNearestHubs(FoodHub, coordinates) {
     FoodHub.find({
         location: {
             $near: {
                 $geometry: {
                     type: "Point",
-                    coordinates: coordinates
+                    coordinates: [17.4544593, 78.3004403]
                 },
                 $maxDistance: 2000
             }
         }
-    }, function (err, foodHubs) {
+    }).exec(function (err, foodHubs) {
         if (err) {
             console.log("Unable to fetch nearest Food Hubs: ", err.toString())
             return null;
@@ -20,3 +20,5 @@ function fetchNearestHubs(coordinates) {
         }
     })
 }
+
+module.exports.fetchNearestHubs = fetchNearestHubs;
