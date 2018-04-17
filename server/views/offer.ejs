@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Offer:
+        <%= offer.offerID %>
+    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- <link rel="stylesheet" type="text/css" media="screen" href="main.css" /> -->
+    <!-- <script src="main.js"></script> -->
+    <style>
+        .offerMarker {
+            background-image: url('/images/offerMarker.ico');
+            background-size: cover;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        .hubMarker {
+            background-image: url('/images/hubsMarker.ico');
+            background-size: cover;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        .mapboxgl-popup {
+            max-width: 200px;
+        }
+        .mapboxgl-popup-content {
+            text-align: left;
+            font-family: 'Open Sans', sans-serif;
+        }
+    </style>
+    <script src='https://api.mapbox.com/mapbox-gl-js/v0.44.2/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v0.44.2/mapbox-gl.css' rel='stylesheet' />
+
+</head>
+
+<body data-offerID="<%= offer.offerID %>">
+    <h3>OFFER:
+        <%= offer.offerID %>
+    </h3>
+    <h4>Offer Details: </h4>
+    <%= offer.offerID %>
+    <hr />
+    <h4>Map:</h4>
+    <p>
+        Offer is marked in red, and the Food Hubs in black.
+    </p>
+    <div id="offerCoords" data-lat="<%= offer.location.coordinates[0] %>" data-long="<%= offer.location.coordinates[1] %>"></div>
+    
+    <div id='map' style='width: 500px; height: 500px;'></div>
+
+    <script src="/js/offerMap.js"></script>
+    <!-- <script>
+       
+    </script> -->
+</body>
+
+</html>

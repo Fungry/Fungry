@@ -20,7 +20,8 @@ router.get('/:offerID', function (req, res, next) {
             return res.json({ error })
         }
 
-        return res.json({ error, offer })
+        // return res.json({ error, offer })
+        return res.render('offer', {offer})
     })
 })
 

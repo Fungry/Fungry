@@ -1,7 +1,8 @@
 // To fetch the nearest hubs for a given offer's coordinates
 async function fetchNearestHubs(db, coordinates) {
+    let hubs;
     try {
-        let hubs = await db.FoodHub.find({
+        hubs = await db.FoodHub.find({
             location: {
                 $near: {
                     $geometry: {
