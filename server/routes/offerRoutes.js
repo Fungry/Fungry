@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { isLoggedIn } = require('../middlewares/authCheck')
-
+const { fetchNearestHubs } = require('../utils/fetchNearestHubs')
 // load the models
 const db = require('../models')
 
@@ -34,7 +34,7 @@ router.get('/:offerID/fetchFoodHubs', async function (req, res, next) {
         }).exec()
         if (!offer) return res.json({ error: "Offer doesn't exist" });
 
-        let nearestHubs = await fetchNearestHubs(offer.location.coordinates)
+        let nearestHubs = await fetchNearestHubs(db, offer.location.coordinates)
         if (!nearestHubs) throw "fetchNearestHubs returned null"
 
         if (nearestHubs.length === 0)
@@ -51,20 +51,6 @@ router.get('/:offerID/fetchFoodHubs', async function (req, res, next) {
 })
 
 // Until Functions
-async function fetchNearestHubs(coordinates) {
-    let hubs = await db.FoodHub.find({
-        location: {
-            $near: {
-                $geometry: {
-                    type: "Point",
-                    coordinates: coordinates
-                },
-                $maxDistance: 10000
-            }
-        }
-    }).exec();
 
-    return hubs;
-}
 
 module.exports = router;
