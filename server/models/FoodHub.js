@@ -13,7 +13,8 @@ var foodHubSchema = new mongoose.Schema({
     location: {
         type: {
             $type: String,
-            default: 'Point',
+            default: "Point",
+            enum: "Point",
             required: [true, "GeoJSON requires a type"]
         },
         address: { $type: String },
@@ -34,6 +35,10 @@ var foodHubSchema = new mongoose.Schema({
 
 }, { timestamps: true, typeKey: '$type' });
 
+// 
+foodHubSchema.index({location: '2dsphere'})
+
+// 
 var FoodHub = mongoose.model('FoodHub', foodHubSchema);
 
 module.exports = FoodHub;

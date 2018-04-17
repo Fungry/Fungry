@@ -39,7 +39,8 @@ var userSchema = new mongoose.Schema({
     savedLocations: [{
         type: {
             $type: String,
-            default: 'Point',
+            default: "Point",
+            enum: "Point",
             required: [true, "GeoJSON requires a type"]
         },
         address: { $type: String },

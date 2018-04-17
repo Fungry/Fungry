@@ -14,7 +14,8 @@ var offerSchema = new mongoose.Schema({
     location: {
         type: {
             $type: String,
-            default: 'Point',
+            default: "Point",
+            enum: "Point",
             required: [true, "GeoJSON requires a type"]
         },
         address: { $type: String },
@@ -46,6 +47,8 @@ var offerSchema = new mongoose.Schema({
     }
 
 }, { timestamps: true, typeKey: '$type' });
+
+offerSchema.index({location: '2dsphere'})
 
 var Offer = mongoose.model('Offer', offerSchema);
 
