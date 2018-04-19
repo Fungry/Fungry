@@ -3,10 +3,11 @@ const router = express.Router();
 const { isLoggedIn } = require('../middlewares/authCheck')
 // load up the user model
 var User = require('../models/User');
+var FoodHub = require('../models/FoodHub');
 
 /* GET all users listing. */
 // ADMIN only
-router.get('/', isLoggedIn, async function (req, res, next) {
+router.get('/', async function (req, res, next) {
     // This route needs be accessible to Admins only
     // FIX THIS
     res.json({
@@ -16,23 +17,24 @@ router.get('/', isLoggedIn, async function (req, res, next) {
 });
 
 // GET single user
-router.get('/:username', async function (req, res, next) {
+router.get('/:foodHubID', async function (req, res, next) {
     try {
-        let user = await User.findOne({ 'local.username': req.params.username }, { 'local.password': 0 }).exec()
-        if (!user) {
+        let foodHub = await FoodHub.findOne({ 'foodHubID': req.params.foodHubID }, { '_id': 0 }).exec()
+        if (!foodHub) {
             res.status(404)
             return res.json({
-                error: "No user with the username exists in our records"
+                error: "No foodHub with the foodHubID exists in our records"
             })
         }
-        // console.log(user)
-        return res.json({
-            error: null,
-            // message: user,
-            user,
-        })
+        
+        // return res.json({
+        //     error: null,
+        //     // message: user,
+        //     foodHub,
+        // })
+        return res.render('foodHub/foodHub', { foodHub })
     } catch (error) {
-        next("GET /api/users/ " + req.params.username + " | " + error.toString())
+        next("GET /api/foodHub/ " + req.params.foodHubID + " | " + error.toString())
     }
 
 });

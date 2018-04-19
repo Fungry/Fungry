@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Food Hub</title>
+</head>
+
+<body data-foodHubID="<%= foodHub.foodHubID %>" data-ws-address="<%= PRIVATE_IP_WS_ADDRESS %>">
+    <h2>
+        <%= foodHub.name %>
+    </h2>
+    <h4>Address:
+        <%= foodHub.location.address %>
+    </h4>
+
+    <div id="status">
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            let body = document.getElementsByTagName('body')[0];
+            console.log(body.dataset.wsAddress);
+            var status = document.getElementById('status');
+
+            // if user is running mozilla then use it's built-in WebSocket
+            window.WebSocket = window.WebSocket || window.MozWebSocket;
+            var connection = new WebSocket(body.dataset.wsAddress);
+
+            connection.onopen = function () {
+                // Connection is opened and ready to use
+                status.innerHTML = 'Websocket connection has been established';
+            }
+
+        }, false);
+    </script>
+</body>
+
+</html>

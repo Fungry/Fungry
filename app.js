@@ -47,14 +47,23 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 
+// Load Private IP address in 
+app.use(function (req, res, next) {
+    // This is for making
+    res.locals.PRIVATE_IP_WS_ADDRESS = "ws://" + "10.13.4.185" + ":3000";
+    next();
+});
+
 // routes ======================================================================
 const userRoutes = require('./server/routes/userRoutes');
 const offerRoutes = require('./server/routes/offerRoutes');
+const foodHubRoutes = require('./server/routes/foodHubRoutes');
 
 // load our routes and pass in our app and fully configured passport
 require('./server/routes/authRoutes')(app, passport);
 app.use('/api/users', userRoutes)
 app.use('/api/offers', offerRoutes)
+app.use('/api/foodHubs', foodHubRoutes)
 
 
 app.get('/test', function (req, res) {
