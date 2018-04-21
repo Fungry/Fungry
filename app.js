@@ -24,6 +24,7 @@ mongoose.connect(configDB.url); // connect to our database
 mongoose.set('debug', true)
 // pass passport for configuration
 require('./config/passport')(passport);
+require('./config/passportFoodHub')(passport);
 ///////////////////////////////////////////////////////////////////////
 
 // view engine setup
@@ -61,6 +62,8 @@ const foodHubRoutes = require('./server/routes/foodHubRoutes');
 
 // load our routes and pass in our app and fully configured passport
 require('./server/routes/authRoutes')(app, passport);
+require('./server/routes/foodHubAuthRoutes')(app, passport);
+
 app.use('/api/users', userRoutes)
 app.use('/api/offers', offerRoutes)
 app.use('/api/foodHubs', foodHubRoutes)

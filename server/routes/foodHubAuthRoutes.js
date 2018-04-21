@@ -15,6 +15,7 @@ module.exports = function (app, passport) {
 
     // process the login form
     app.post('/api/auth/foodhubs/login', function (req, res, next) {
+        console.log(req.body);
         passport.authenticate('foodhub-local-login', function (err, user, info) {
             // if (err) { return next(err); }
             if (err) {
@@ -22,6 +23,7 @@ module.exports = function (app, passport) {
                     error: "Error: " + err.toString()
                 });
             }
+            console.log(user);
             if (!user) {
                 return res.json({
                     error: "There was an error logging in this foodhub"
