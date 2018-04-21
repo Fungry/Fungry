@@ -20,6 +20,8 @@
 
     </div>
 
+    <button type="submit" id="acceptOfferButton">Accept the Offer</button>
+
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             let body = document.getElementsByTagName('body')[0];
@@ -33,7 +35,17 @@
             connection.onopen = function () {
                 // Connection is opened and ready to use
                 status.innerHTML = 'Websocket connection has been established';
+                connection.send(JSON.stringify({
+                    msg: "Hello"
+                }));
             }
+
+            let acceptOfferButton = document.getElementById('acceptOfferButton');
+            acceptOfferButton.addEventListener('click', function (event) {
+                connection.send(JSON.stringify({
+                    msg: "Hello"
+                }));
+            }, false)
 
         }, false);
     </script>
