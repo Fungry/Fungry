@@ -6,7 +6,7 @@ module.exports = function (app, passport) {
     // LOGIN ===============================
     // =====================================
     // show the login form
-    app.get('/api/auth/login', function (req, res) {
+    app.get('/api/auth/foodhubs/login', function (req, res) {
         return res.json({
             error: null,
             message: "This is a dummy route"
@@ -14,8 +14,8 @@ module.exports = function (app, passport) {
     });
 
     // process the login form
-    app.post('/api/auth/login', function (req, res, next) {
-        passport.authenticate('local-login', function (err, user, info) {
+    app.post('/api/auth/foodhubs/login', function (req, res, next) {
+        passport.authenticate('foodhub-local-login', function (err, user, info) {
             // if (err) { return next(err); }
             if (err) {
                 return res.json({
@@ -24,14 +24,14 @@ module.exports = function (app, passport) {
             }
             if (!user) {
                 return res.json({
-                    error: "There was an error logging in this user"
+                    error: "There was an error logging in this foodhub"
                 });
             }
             req.logIn(user, function (err) {
                 if (err) { return next(err); }
                 return res.json({
                     error: null,
-                    message: "User successfully logged in!"
+                    message: "Food Hub successfully logged in!"
                 })
             });
         })(req, res, next);
@@ -40,7 +40,7 @@ module.exports = function (app, passport) {
     // =====================================
     // SIGNUP ==============================
     // =====================================
-    app.get('/api/auth/signup', function (req, res) {
+    app.get('/api/auth/foodhubs/signup', function (req, res) {
         return res.json({
             error: null,
             message: "This is a dummy route"
@@ -48,8 +48,8 @@ module.exports = function (app, passport) {
     });
 
     // process the signup form
-    app.post('/api/auth/signup', function (req, res, next) {
-        passport.authenticate('local-signup', function (err, user, info) {
+    app.post('/api/auth/foodhubs/signup', function (req, res, next) {
+        passport.authenticate('foodhub-local-signup', function (err, user, info) {
             // if (err) { return next(err); }
             if (err) {
                 // return next(err)
@@ -59,14 +59,14 @@ module.exports = function (app, passport) {
             }
             if (!user) {
                 return res.json({
-                    error: "There was an error signing up this user"
+                    error: "There was an error signing up this Food Hub"
                 });
             }
             req.logIn(user, function (err) {
                 if (err) { return next(err); }
                 return res.json({
                     error: null,
-                    message: "User successfully signed up and logged in!"
+                    message: "Food Hub successfully signed up and logged in!"
                 })
             });
         })(req, res, next);
@@ -76,7 +76,7 @@ module.exports = function (app, passport) {
     // USER LOGIN CHECK ====================
     // =====================================
 
-    app.get("/api/auth/check", function (req, res, next) {
+    app.get("/api/auth/foodhubs/check", function (req, res, next) {
         // if user is authenticated in the session, carry on 
         if (req.isAuthenticated())
             // This needs a fix 
@@ -91,11 +91,11 @@ module.exports = function (app, passport) {
     // =====================================
     // LOGOUT ==============================
     // =====================================
-    app.post('/api/auth/logout', function (req, res) {
+    app.post('/api/auth/foodhubs/logout', function (req, res) {
         req.logout();
         res.json({
             error: null,
-            message: "User successfully logged out!"
+            message: "Food Hub successfully logged out!"
         })
     });
 };
