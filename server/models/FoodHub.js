@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const shortid = require('shortid');
+const bcrypt = require('bcrypt');
 
 var foodHubSchema = new mongoose.Schema({
     foodHubID: {

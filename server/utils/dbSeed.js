@@ -43,6 +43,9 @@ async function beefItUp() {
     // Navodaya Grounds Nallagandla, Gopanapalli Hyderabad, Telangana 500019
     // 17.4546923,78.2926963,15.02z
     let foodHubOne = await db.FoodHub.create({
+        'local.username': "foodhubone",
+        'local.password': "123",
+        email: "foodhubone@one.com",
         name: "Food Hub One",
         "location.type": "Point",
         "location.address": "Navodaya Grounds Nallagandla, Gopanapalli Hyderabad, Telangana 500019",
@@ -55,6 +58,9 @@ async function beefItUp() {
     // Bharat Heavy Electricals Limited భరత్ హెవీ ఎలక్ట్రికల్స్ లిమిటెడ్ Hyderabad, Telangana
     // 17.4952418,78.2805514,14z
     let foodHubTwo = await db.FoodHub.create({
+        'local.username': "foodhubtwo",
+        'local.password': "123",
+        email: "foodhubtwo@one.com",        
         name: "Food Hub Two",
         "location.type": "Point",
         "location.address": "Bharat Heavy Electricals Limited భరత్ హెవీ ఎలక్ట్రికల్స్ లిమిటెడ్ Hyderabad, Telangana",
@@ -67,6 +73,9 @@ async function beefItUp() {
     // Yashoda Hospitals - Secunderabad యశోద హాస్పిటల్స్
     // 17.4339641,78.4906122,14.92z
     let foodHubThree = await db.FoodHub.create({
+        'local.username': "foodhubthree",
+        'local.password': "123",
+        email: "foodhubthree@one.com",    
         name: "Food Hub Three",
         "location.type": "Point",
         "location.address": "Yashoda Hospitals - Secunderabad యశోద హాస్పిటల్స్",
@@ -77,7 +86,7 @@ async function beefItUp() {
     })
 }
 // Uncomment the following for creating dummy data 
-beefItUp();
+// beefItUp();
 
 //  //  //  //  //  //  //  //  //  //  //  //  //  //  //  //  //  //  //  //
 //  //  //  //  //  //  //  //  //  //  //  //  //  //  //  //  //  //  //  //
@@ -90,4 +99,8 @@ async function cleanUp() {
     await db.FoodHub.remove({}).exec();
 }
 // Uncomment the following for cleaing up the database
+// cleanUp();
+
+
+beefItUp();
 // cleanUp();
