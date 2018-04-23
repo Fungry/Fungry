@@ -19,7 +19,7 @@ router.get('/:offerID', function (req, res, next) {
             res.status(500);
             return res.json({ error })
         }
-
+        res.locals.USER = req.user;
         // return res.json({ error, offer })
         return res.render('offer', {offer})
     })

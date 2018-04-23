@@ -19,6 +19,7 @@
             border-radius: 50%;
             cursor: pointer;
         }
+
         .hubMarker {
             background-image: url('/images/hubsMarker.ico');
             background-size: cover;
@@ -27,9 +28,11 @@
             border-radius: 50%;
             cursor: pointer;
         }
+
         .mapboxgl-popup {
             max-width: 200px;
         }
+
         .mapboxgl-popup-content {
             text-align: left;
             font-family: 'Open Sans', sans-serif;
@@ -40,25 +43,65 @@
 
 </head>
 
-<body data-offerID="<%= offer.offerID %>">
+<body data-offerID="<%= offer.offerID %>" data-username="<%= USER.local.username %>" data-ws-address="<%= PRIVATE_IP_WS_ADDRESS %>">
     <h3>OFFER:
         <%= offer.offerID %>
     </h3>
     <h4>Offer Details: </h4>
     <%= offer.offerID %>
-    <hr />
-    <h4>Map:</h4>
-    <p>
-        Offer is marked in red, and the Food Hubs in black.
-    </p>
-    <div id="offerCoords" data-lat="<%= offer.location.coordinates[0] %>" data-long="<%= offer.location.coordinates[1] %>"></div>
-    
-    <div id='map' style='width: 500px; height: 500px;'></div>
+        <hr />
+        <h4>Map:</h4>
+        <p>
+            Offer is marked in red, and the Food Hubs in black.
+        </p>
+        <div id="offerCoords" data-lat="<%= offer.location.coordinates[0] %>" data-long="<%= offer.location.coordinates[1] %>"></div>
+        <div id="status"></div>
 
-    <script src="/js/offerMap.js"></script>
-    <!-- <script>
-       
-    </script> -->
+        <div id='map' style='width: 500px; height: 500px;'></div>
+        <div id="offerLogs"></div>
+
+        <!-- <script src="/js/offerMap.js"></script> -->
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                let body = document.getElementsByTagName('body')[0];
+                let offerLogs = document.getElementById('offerLogs');
+
+                console.log(body.dataset.wsAddress);
+                var status = document.getElementById('status');
+
+                // if user is running mozilla then use it's built-in WebSocket
+                window.WebSocket = window.WebSocket || window.MozWebSocket;
+                var connection = new WebSocket(body.dataset.wsAddress);
+
+                // When the websocket connection opens
+                connection.onopen = function () {
+                    // Connection is opened and ready to use
+                    status.innerHTML = 'Websocket connection has been established';
+                    connection.send(JSON.stringify({
+                        type: "create-wsclient",
+                        clientName: body.dataset.username,
+                    }));
+                }
+
+                connection.onmessage = function (message) {
+                    // Decipher the secret message
+                    let parsedData = JSON.parse(message.data);
+
+                    // When a Food Hub accepts the offer
+                    if (parsedData.type === "offer-accepted") {
+                        let htmlContent = offerLogs.innerHTML;
+                        htmlContent += `
+                            <div class="offer-notifications">
+                                <p>${parsedData.foodHubName} has accepted your offer. Someone will be assigned shortly to pickup your offer.</p>
+                                <hr />
+                            </div>
+                        `;
+                        offerLogs.innerHTML = htmlContent;
+                    }
+                }
+            }, false);
+        </script>
 </body>
 
 </html>

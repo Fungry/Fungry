@@ -3,6 +3,7 @@ const url = require('url');
 const Clients = require('./Clients');
 const detectDevice = require('device');
 const connect = require('./connect');
+const offerWsHandler = require('./offerWsHandler');
 // const disconnect = require('./disconnect');
 
 const clients = new Clients();
@@ -20,6 +21,9 @@ function initializeWS(server) {
 
         // perform initial actions on connect
         connect(wsServer, ws, req, clients);
+
+        // perform actions pertaining to offer
+        offerWsHandler(wsServer, ws, req, clients);
         
         // perform actions on disconnect
         // disconnect(wsServer, ws, req, clients);

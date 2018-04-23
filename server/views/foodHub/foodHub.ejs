@@ -8,7 +8,7 @@
     <title>Food Hub</title>
 </head>
 
-<body data-foodHubID="<%= foodHub.foodHubID %>" data-ws-address="<%= PRIVATE_IP_WS_ADDRESS %>">
+<body data-foodHubID="<%= foodHub.foodHubID %>" data-foodhub-name="<%= foodHub.name %>" data-ws-address="<%= PRIVATE_IP_WS_ADDRESS %>">
     <h2>
         <%= foodHub.name %>
     </h2>
@@ -89,7 +89,12 @@
                         let acceptOfferButton = document.getElementById(`button-${offer.offerID}`);
                         acceptOfferButton.addEventListener('click', function (event) {
                             connection.send(JSON.stringify({
-                                msg: "Hello"
+                                type: "accept-offer",
+                                offerID: `${offer.offerID}`,
+                                foodHubID: body.dataset.foodhubid,
+                                foodHubName: body.dataset.foodhubName,
+                                username: `${offer.user.local.username}`
+
                             }));
                         }, false)
                     });
