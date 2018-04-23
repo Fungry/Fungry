@@ -16,15 +16,16 @@
         <%= foodHub.location.address %>
     </h4>
 
-    <div id="status">
-
-    </div>
-
-    <button type="submit" id="acceptOfferButton">Accept the Offer</button>
+    <div id="status"></div>
+    <div id="wslog"></div>
+    <h3>Currently active offers:</h3>
+    <div id="nearestOffers"></div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             let body = document.getElementsByTagName('body')[0];
+            let nearestOffers = document.getElementById('nearestOffers');
+
             console.log(body.dataset.wsAddress);
             var status = document.getElementById('status');
 
@@ -32,21 +33,68 @@
             window.WebSocket = window.WebSocket || window.MozWebSocket;
             var connection = new WebSocket(body.dataset.wsAddress);
 
+            // When the websocket connection opens
             connection.onopen = function () {
                 // Connection is opened and ready to use
                 status.innerHTML = 'Websocket connection has been established';
                 connection.send(JSON.stringify({
-                    msg: "Hello"
+                    type: "create-wsclient",
+                    clientName: body.dataset.foodhubid,
+                }));
+
+                // Fetch all nearby offers
+                connection.send(JSON.stringify({
+                    type: "fetch-offers",
+                    clientName: body.dataset.foodhubid,
                 }));
             }
 
-            let acceptOfferButton = document.getElementById('acceptOfferButton');
-            acceptOfferButton.addEventListener('click', function (event) {
-                connection.send(JSON.stringify({
-                    msg: "Hello"
-                }));
-            }, false)
+            connection.onmessage = function (message) {
+                // Decipher the secret message
+                let parsedData = JSON.parse(message.data);
+                console.log(parsedData);
+                if (parsedData.type === "receive-offers") {
+                    parsedData.nearestOffers.forEach(offer => {
+                        let offerDiv = document.createElement('div');
+                        offerDiv.id = offer.offerID;
+                        let htmlContent = `
+                            <h4>Offer ID: ${offer.offerID}</h4>
+                            <p> 
+                                <b>Created at: </b> ${offer.createdAt} | 
+                                <b>By: </b> ${offer.user.local.username}.
+                                <br />
+                                <b>Address: </b> ${offer.location.address}.
+                                <br />
+                                <b>Description: </b> ${offer.description}.
+                            </p>
+                            <img src="${offer.photos[0]}">
+                        `;
 
+                        offer.items.forEach((item) => {
+                            htmlContent += `
+                                <p>
+                                    <b> ${item.name} </b>, ${item.serving}, ${item.veg}.
+                                </p>
+                            `;
+                        });
+
+                        htmlContent += `
+                            <div><b>Status: </b> ${offer.status}</div> <br />
+                            <button type="submit" id="button-${offer.offerID}" data-offer-id="${offer.offerID}" data-username="${offer.user.local.username}">Accept the Offer</button>
+                            <hr />
+                        `;
+                        offerDiv.innerHTML = htmlContent;
+                        nearestOffers.appendChild(offerDiv);
+
+                        let acceptOfferButton = document.getElementById(`button-${offer.offerID}`);
+                        acceptOfferButton.addEventListener('click', function (event) {
+                            connection.send(JSON.stringify({
+                                msg: "Hello"
+                            }));
+                        }, false)
+                    });
+                }
+            }
         }, false);
     </script>
 </body>

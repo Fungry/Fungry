@@ -90,18 +90,12 @@ module.exports = function (passport) {
     },
         function (req, username, password, done) { // callback with email and password from our form
 
-            console.log("Inside foodhub-local-login strategy")
-            console.log("username: ", username)
-            console.log("password: ", password)
-
             // Check if a user whose email is the same as the form's email, exists
             FoodHub.findOne({ 'local.username': username }, function (err, user) {
                 // if there are any errors, return the error before anything else
                 if (err)
                     return done(err);
                 
-                console.log("User is: ")
-                console.log(user);
                 // if no user is found, return the message
                 if (!user)
                     return done(null, false, "No user with this username exists!");

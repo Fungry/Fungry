@@ -51,7 +51,8 @@ app.use(passport.session()); // persistent login sessions
 // Load Private IP address in 
 app.use(function (req, res, next) {
     // This is for making
-    res.locals.PRIVATE_IP_WS_ADDRESS = "ws://" + "192.168.100.5" + ":3000";
+    // 192.168.100.2
+    res.locals.PRIVATE_IP_WS_ADDRESS = "ws://" + "localhost" + ":3000";
     next();
 });
 

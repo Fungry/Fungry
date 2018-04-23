@@ -26,7 +26,7 @@ router.get('/:offerID', function (req, res, next) {
 })
 
 // GET fetchFoodHubs
-// Fetch Nearest (2KM radius) foodHubs
+// Fetch Nearest (10KM radius) foodHubs
 router.get('/:offerID/fetchFoodHubs', async function (req, res, next) {
     let error = null;
     try {
@@ -51,7 +51,6 @@ router.get('/:offerID/fetchFoodHubs', async function (req, res, next) {
     }
 })
 
-// Until Functions
-
+// 
 
 module.exports = router;

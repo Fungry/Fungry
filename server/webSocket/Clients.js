@@ -14,6 +14,10 @@ class Clients {
     removeClient(username) {
         delete this.clientList[username];
     }
+
+    listClientsKeys() {
+        return Object.keys(this.clientList);
+    }
 }
 
 module.exports = Clients;
