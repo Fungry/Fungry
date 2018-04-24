@@ -71,7 +71,10 @@ app.use('/api/foodHubs', foodHubRoutes)
 
 
 app.get('/test', function (req, res) {
-    return res.render('index')
+    let qrImage = require('qr-image');
+    var svg_string = qrImage.imageSync('I love QR!', { type: 'svg' });
+
+    return res.render('index', {svg_string})
 })
 
 // catch 404 and forward to error handler

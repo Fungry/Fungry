@@ -21,6 +21,9 @@
     <h3>Currently active offers:</h3>
     <div id="nearestOffers"></div>
 
+    <br>
+    <br>
+    <br>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             let body = document.getElementsByTagName('body')[0];
@@ -81,7 +84,6 @@
                         htmlContent += `
                             <div><b>Status: </b> ${offer.status}</div> <br />
                             <button type="submit" id="button-${offer.offerID}" data-offer-id="${offer.offerID}" data-username="${offer.user.local.username}">Accept the Offer</button>
-                            <hr />
                         `;
                         offerDiv.innerHTML = htmlContent;
                         nearestOffers.appendChild(offerDiv);
@@ -96,11 +98,48 @@
                                 username: `${offer.user.local.username}`
 
                             }));
+
+                            let qrCodeDiv = document.createElement('div');
+                            qrCodeDiv.id = `qrCode-${offer.offerID}`;
+                            qrCodeDiv.style.width = "200px";
+                            qrCodeDiv.style.height = "200px";
+
+                            let assignAgentButton = document.createElement('button');
+                            assignAgentButton.id = `assignAgent-${offer.offerID}`;
+                            assignAgentButton.innerHTML = `Assign an Agent`;
+                            assignAgentButton.dataset.offerid = `${offer.offerID}`;
+                            assignAgentButton.dataset.username = `${offer.user.local.username}`;
+
+                            assignAgentButton.addEventListener('click', assignAgentButtonClickHandler, false);
+
+                            offerDiv.appendChild(assignAgentButton)
+                            offerDiv.appendChild(qrCodeDiv)
+
                         }, false)
                     });
                 }
+
+                if (parsedData.type === "render-qrcode") {
+                    console.log("SVG String: ", parsedData.offerID);
+                    let qrDiv = document.getElementById(`qrCode-${parsedData.offerID}`);
+                    console.log(qrDiv);
+                    qrDiv.innerHTML = parsedData.svgString;
+                }
+            }
+
+            function assignAgentButtonClickHandler(event) {
+                console.log("Assign Agent Button Clicked")
+                connection.send(JSON.stringify({
+                    type: "assign-agent",
+                    offerID: event.target.dataset.offerid,
+                    username: event.target.dataset.username,
+                    foodHubID: body.dataset.foodhubid,
+                    foodHubName: body.dataset.foodhubName,
+                }));
             }
         }, false);
+
+
     </script>
 </body>
 

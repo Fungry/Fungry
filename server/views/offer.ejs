@@ -87,13 +87,27 @@
                 connection.onmessage = function (message) {
                     // Decipher the secret message
                     let parsedData = JSON.parse(message.data);
+                    let htmlContent;
 
                     // When a Food Hub accepts the offer
                     if (parsedData.type === "offer-accepted") {
-                        let htmlContent = offerLogs.innerHTML;
+                        htmlContent = offerLogs.innerHTML;
                         htmlContent += `
                             <div class="offer-notifications">
                                 <p>${parsedData.foodHubName} has accepted your offer. Someone will be assigned shortly to pickup your offer.</p>
+                                <hr />
+                            </div>
+                        `;
+                        offerLogs.innerHTML = htmlContent;
+                    }
+
+                    if (parsedData.type === "agent-assigned") {
+                        console.log(offerLogs)
+
+                        htmlContent = offerLogs.innerHTML;
+                        htmlContent += `
+                            <div class="offer-notifications">
+                                <p>${parsedData.foodHubName} has assigned an agent to pick up your offer.</p>
                                 <hr />
                             </div>
                         `;

@@ -5,6 +5,7 @@ class Clients {
         this.clientList = {};
         this.saveClient = this.saveClient.bind(this);
         this.removeClient = this.removeClient.bind(this);
+        this.listClientsKeys = this.listClientsKeys.bind(this);
     }
 
     saveClient(username, client) {
